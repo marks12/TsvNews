@@ -1,0 +1,100 @@
+<script src="//cdn.ckeditor.com/4.4.1/standard/ckeditor.js"></script>
+<script>
+	CKEDITOR.replace( 'content' );
+</script>
+
+<?php 
+
+// http://framework.zend.com/manual/2.0/en/modules/zend.form.collections.html
+
+use Zend\Form\Form;
+use Zend\Form\Element;
+
+$dateTime = new Element\DateTime('start_date');
+$dateTime
+->setLabel('Дата начала отображения новости')
+->setAttributes(array(
+		'min'  => date('Y-m-d').'T00:00:00Z',
+		'max'  => date('Y-m-d',time()+60*60*24*7).'T00:00:00Z',
+		'step' => '60', // minutes; default step interval is 1 min
+));
+
+
+$form = new Form('add-news');
+$form->setAttribute('action', $this->url('zfcadmin/tsv-news/default',array("action"=>"add")));
+$form->setAttribute('method', 'post');
+$form->add($dateTime);
+$form->prepare();
+
+
+?>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://jquery-ui.googlecode.com/svn-history/r3004/trunk/ui/i18n/ui.datepicker-ru.js"></script>
+<script>
+  $(function() {
+    $( "#start_date" ).datepicker( $.datepicker.regional[ "ru" ] );
+  });
+  $(function() {
+    $( "#end_date" ).datepicker( $.datepicker.regional[ "ru" ] );
+  });
+  $(function() {
+    $( "#news_date" ).datepicker( $.datepicker.regional[ "ru" ] );
+  });
+</script>
+  
+<?php echo $this->form()->openTag($form);?>
+	<div class="row">
+	  <div class="span12">
+			<h1>Добавление новости</h1>
+	  </div>
+	</div>
+	<br>
+	<div class="row">
+	  <div class="span12">
+			<input type="text" class="input-xxlarge" placeholder="Введите заголовок новости" name="title" style="width:98%;" required>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="span12">
+			<textarea class="ckeditor" name="content"></textarea>
+	  </div>
+	</div>
+
+	<br>
+	<div class="row">
+	  <div class="span3">
+			<strong><?php echo $form->get('start_date')->getLabel();?></strong>
+	  </div>
+	  <div class="span9">
+			<input type="text" class="input" id="start_date" name="start_date" required>
+	  </div>
+	</div>
+
+	<br>
+	<div class="row">
+	  <div class="span3">
+			<strong>Дата окончания отображения новости</strong>
+	  </div>
+	  <div class="span9">
+			<input type="text" class="input" id="end_date" name="end_date" required>
+	  </div>
+	</div>
+		
+	<br>
+	<div class="row">
+	  <div class="span3">
+			<strong>Отображаемая дата новости</strong>
+	  </div>
+	  <div class="span9">
+			<input type="text" class="input" id="news_date" name="news_date" required>
+	  </div>
+	</div>
+	
+	<div class="row">
+	  <div class="span12">
+			<button type="submit" class="btn btn-success">Сохранить</button>
+			<button type="button" onclick="if(confirm('Хотите отменить сохранение?')) window.location.href='<?php echo $this->url('zfcadmin/tsv-news') ?>';" class="btn btn-warning">Отмена</button>
+	  </div>
+	</div>
+<?php echo $this->form()->closeTag();?>

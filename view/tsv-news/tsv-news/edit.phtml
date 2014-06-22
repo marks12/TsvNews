@@ -1,0 +1,30 @@
+<script src="//cdn.ckeditor.com/4.4.1/standard/ckeditor.js"></script>
+<script>
+	CKEDITOR.replace( 'content' );
+</script>
+
+<form method="post">
+	<div class="row">
+	  <div class="span12">
+			<h1>Редактировать новость</h1>
+	  </div>
+	</div>
+	<br>
+	<div class="row">
+	  <div class="span12">
+			<input type="text" class="input-xxlarge" placeholder="Введите заголовок новости" name="title" style="width:98%;" required>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="span12">
+			<textarea class="ckeditor" name="content"></textarea>
+	  </div>
+	</div>
+	<br>
+	<div class="row">
+	  <div class="span12">
+			<button type="submit" class="btn btn-success">Сохранить</button>
+			<button type="button" onclick="if(confirm('Хотите отменить сохранение?')) window.location.href='<?php echo $this->url('zfcadmin/tsv-news') ?>';" class="btn btn-warning">Отмена</button>
+	  </div>
+	</div>
+</form>
