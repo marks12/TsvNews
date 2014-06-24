@@ -167,6 +167,78 @@ class TsvNewsController extends AbstractActionController
     	return array();
     }
     
+    public function disableNewsAction()
+    {
+    	$request = $this->getRequest();
+    	
+//     	exit('disable');
+
+//     	echo (int)$this->getEvent()->getRouteMatch()->getParam('id');
+    	
+    	$objectManager = $this
+    	->getServiceLocator()
+    	->get('Doctrine\ORM\EntityManager');
+    	
+    	$news = $objectManager
+    	->getRepository('TsvNews\Entity\News')
+    	->findOneBy(
+    			array(
+    					'id' => (int)$this->getEvent()->getRouteMatch()->getParam('id')
+    			));
+    	
+    	$news->__set("disabled_news", true);
+    	
+    	$objectManager->persist($news);
+    	$objectManager->flush();
+    	
+    	$news = $objectManager
+    	->getRepository('TsvNews\Entity\News')
+    	->findOneBy(
+    			array(
+    					'id' => (int)$this->getEvent()->getRouteMatch()->getParam('id')
+    			));
+//     	var_dump($news->__get('disabled_news'));
+    	 
+        return $this->redirect()->toRoute("zfcadmin/tsv-news/paginator",array("page"=>(int)$this->getEvent()->getRouteMatch()->getParam('page')));
+    }
+    
+    
+    public function enableNewsAction()
+    {
+    	$request = $this->getRequest();
+    	
+//     	exit('enable');
+    	
+    	$objectManager = $this
+    	->getServiceLocator()
+    	->get('Doctrine\ORM\EntityManager');
+    	
+    	$news = $objectManager
+    	->getRepository('TsvNews\Entity\News')
+    	->findOneBy(
+    			array(
+    					'id' => (int)$this->getEvent()->getRouteMatch()->getParam('id')
+    			));
+
+    	var_dump($news->__get('disabled_news'));
+    	 
+    	$news->__set("disabled_news", false);
+    	
+    	$objectManager->persist($news);
+    	$objectManager->flush();
+    	
+    	$news = $objectManager
+    	->getRepository('TsvNews\Entity\News')
+    	->findOneBy(
+    			array(
+    					'id' => (int)$this->getEvent()->getRouteMatch()->getParam('id')
+    			));
+//     	var_dump($news->__get('disabled_news'));
+    	 
+        return $this->redirect()->toRoute("zfcadmin/tsv-news/paginator",array("page"=>(int)$this->getEvent()->getRouteMatch()->getParam('page')));
+    	    	
+    }
+    
     private function getNews()
     {
     	$objectManager = $this
