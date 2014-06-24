@@ -2,7 +2,20 @@
 <script>
 	CKEDITOR.replace( 'content' );
 </script>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://jquery-ui.googlecode.com/svn-history/r3004/trunk/ui/i18n/ui.datepicker-ru.js"></script>
+<script>
+  $(function() {
+    $( "#start_date" ).datepicker( $.datepicker.regional[ "ru" ] );
+  });
+  $(function() {
+    $( "#end_date" ).datepicker( $.datepicker.regional[ "ru" ] );
+  });
+  $(function() {
+    $( "#news_date" ).datepicker( $.datepicker.regional[ "ru" ] );
+  });
+</script>
 <form method="post">
 	<div class="row">
 	  <div class="span12">
@@ -12,15 +25,46 @@
 	<br>
 	<div class="row">
 	  <div class="span12">
-			<input type="text" class="input-xxlarge" placeholder="Введите заголовок новости" name="title" style="width:98%;" required>
+			<input type="text" class="input-xxlarge" placeholder="Введите заголовок новости" value="<?php echo $this->title;?>" name="title" style="width:98%;" required>
 	  </div>
 	</div>
 	<div class="row">
 	  <div class="span12">
-			<textarea class="ckeditor" name="content"></textarea>
+			<textarea class="ckeditor" name="content"><?php echo $this->content;?></textarea>
 	  </div>
 	</div>
 	<br>
+	
+	
+	<div class="row">
+	  <div class="span3">
+			<strong>Дата начала отображения новости</strong>
+	  </div>
+	  <div class="span9">
+			<input type="text" class="input" id="start_date" value="<?php echo $this->start_date->format('d.m.Y');?>" name="start_date" required>
+	  </div>
+	</div>
+
+	<br>
+	<div class="row">
+	  <div class="span3">
+			<strong>Дата окончания отображения новости</strong>
+	  </div>
+	  <div class="span9">
+			<input type="text" class="input" id="end_date" value="<?php echo $this->end_date->format('d.m.Y');?>" name="end_date" required>
+	  </div>
+	</div>
+		
+	<br>
+	<div class="row">
+	  <div class="span3">
+			<strong>Отображаемая дата новости</strong>
+	  </div>
+	  <div class="span9">
+			<input type="text" class="input" id="news_date" value="<?php echo $this->news_date->format('d.m.Y');?>" name="news_date" required>
+	  </div>
+	</div>
+		<br>
 	<div class="row">
 	  <div class="span12">
 			<button type="submit" class="btn btn-success">Сохранить</button>

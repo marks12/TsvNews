@@ -18,7 +18,7 @@ class News {
 	protected $content;
 	
 	/** @ORM\Column(type="boolean") */
-	protected $disabled;
+	protected $disabled_news;
 	
 	/** @ORM\Column(type="datetime") */
 	protected $start_date;
