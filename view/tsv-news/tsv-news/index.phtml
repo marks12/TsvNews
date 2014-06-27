@@ -13,8 +13,6 @@ Zend\View\Helper\PaginationControl::setDefaultViewPartial('partials/tsv_searchpa
   <div class="span12">
   
 		<?php 
-
-		
 		foreach ($paginator as $row)
 		{?>
 		
@@ -36,7 +34,8 @@ Zend\View\Helper\PaginationControl::setDefaultViewPartial('partials/tsv_searchpa
 		 <?php if($row->__get('disabled_news')) echo "<a class='btn btn-small btn-success' style='float:right;' href='".$this->url('zfcadmin/tsv-news/default', array('action'=>'enableNews','id'=>$row->__get('id'),'page'=>$this->paginator->getCurrentPageNumber()))."'>Включить</a>"?>
 		 <?php if(!$row->__get('disabled_news')) echo "<a class='btn btn-small btn-warning' style='float:right;' href='".$this->url('zfcadmin/tsv-news/default', array('action'=>'disableNews','id'=>$row->__get('id'),'page'=>$this->paginator->getCurrentPageNumber()))."'>Отключить</a>"?>
 		 
-          <?php echo $row->__get('content');?>
+          <p><i style="color:gray;"><?php echo $row->__get('short_content');?></i></p>
+          <p><?php echo $row->__get('content');?></p>
         
         <font size="-2">
         Дата начала отображения: <?php echo $row->__get('start_date')->format('d.m.Y');?><br>        

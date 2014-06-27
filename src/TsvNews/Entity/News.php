@@ -16,6 +16,9 @@ class News {
 
 	/** @ORM\Column(type="text") */
 	protected $content;
+
+	/** @ORM\Column(type="string") */
+	protected $short_content;
 	
 	/** @ORM\Column(type="boolean") */
 	protected $disabled_news;

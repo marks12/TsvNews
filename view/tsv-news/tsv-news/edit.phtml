@@ -30,6 +30,15 @@
 	</div>
 	<div class="row">
 	  <div class="span12">
+	  		<strong>Краткий текст новости (до 130 символов Кирилицы без HTML, 255 Латинского текста).</strong>
+	  		<br>
+			<textarea rows="2" cols="300"  class="input-xxlarge" name="short_content" style="width:98%;" required><?php echo $this->short_content;?></textarea>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="span12">
+	  		<strong>Полный текст новости поддерживается html оформление.</strong>
+			<br>
 			<textarea class="ckeditor" name="content"><?php echo $this->content;?></textarea>
 	  </div>
 	</div>

@@ -37,7 +37,7 @@ class TsvNewsController extends AbstractActionController
     	$vm->setVariable('paginator',$paginator);
     	$vm->setVariable('news',$this->getNews());
     	$vm->setVariable('route',$this->getEvent()->getRouteMatch()->getMatchedRouteName());
-
+		
     	return $vm;
     }
 
@@ -87,6 +87,7 @@ class TsvNewsController extends AbstractActionController
 				$this->convert_date();
     			$news->__set("title", $request->getPost()->title);
     			$news->__set("content", $request->getPost()->content);
+    			$news->__set("short_content", $request->getPost()->short_content);
     			$news->__set("start_date", new \DateTime($request->getPost()->start_date));
     			$news->__set("end_date", new \DateTime($request->getPost()->end_date));
     			$news->__set("news_date", new \DateTime($request->getPost()->news_date));
@@ -102,6 +103,7 @@ class TsvNewsController extends AbstractActionController
 
     		$vm->setVariable('title',$news->__get("title"));
     		$vm->setVariable('content',$news->__get("content"));
+    		$vm->setVariable('short_content',$news->__get("short_content"));
     		$vm->setVariable('start_date',$news->__get("start_date"));
     		$vm->setVariable('end_date',$news->__get("end_date"));
     		$vm->setVariable('news_date',$news->__get("news_date"));
@@ -119,7 +121,7 @@ class TsvNewsController extends AbstractActionController
         ->getServiceLocator()
         ->get('Doctrine\ORM\EntityManager');
         $vm =  new ViewModel();
-         
+        
         $news = $objectManager
         ->getRepository('TsvNews\Entity\News')
         ->findOneBy(
@@ -141,7 +143,7 @@ class TsvNewsController extends AbstractActionController
         $request = $this->getRequest();
     	if ($request->isPost()) {
     		
-    		if(isset($request->getPost()->title) && $request->getPost()->content)
+    		if(isset($request->getPost()->title) && $request->getPost()->short_content)
     		{
     			$objectManager = $this
     			->getServiceLocator()
@@ -152,6 +154,7 @@ class TsvNewsController extends AbstractActionController
     			$news = new News();
     			$news->__set("title", $request->getPost()->title);
     			$news->__set("content", $request->getPost()->content);
+    			$news->__set("short_content", $request->getPost()->short_content);
     			$news->__set("disabled_news", false);
     			$news->__set("start_date", new \DateTime($request->getPost()->start_date));
     			$news->__set("end_date", new \DateTime($request->getPost()->end_date));
@@ -172,7 +175,6 @@ class TsvNewsController extends AbstractActionController
     	$request = $this->getRequest();
     	
 //     	exit('disable');
-
 //     	echo (int)$this->getEvent()->getRouteMatch()->getParam('id');
     	
     	$objectManager = $this
@@ -239,7 +241,7 @@ class TsvNewsController extends AbstractActionController
     	    	
     }
     
-    private function getNews()
+    private function getNews($count_news=5)
     {
     	$objectManager = $this
     	->getServiceLocator()
@@ -248,7 +250,45 @@ class TsvNewsController extends AbstractActionController
     	$news = $objectManager
     	->getRepository('TsvNews\Entity\News')
     	->findAll();
-    	 
+    	
+    	return $news;
+    }
+    
+    public function getNewsByPage($actual = true)
+    {
+    	$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+		
+    	if($actual)
+    	$dql = "SELECT * from News where start_date<='".date("Y-m-d")."' and end_date>='".date("Y-m-d")."' and disabled_news=0";
+		else
+		$dql = "SELECT * from News where end_date<'".date("Y-m-d")."' and disabled_news=0";
+
+		$query = $entityManager->createQuery($dql)
+		                       ->setFirstResult(0)
+		                       ->setMaxResults(100);
+		
+		$paginator = new Paginator($query, $fetchJoinCollection = true);
+    	return $paginator;
+    }
+    
+    public function getNewsList($count_news=5)
+    {
+    	$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+    	
+   		$dql = "SELECT n from TsvNews\Entity\News n where n.disabled_news=:disabled_news and n.start_date<=:date";
+//    		where n.start_date<=:date and n.end_date>=:date and n.disabled_news=:disabled_news
+    	$query = $entityManager->createQuery($dql)
+						    	->setFirstResult(0)
+						    	->setMaxResults($count_news);
+    	$query->setParameters(array(
+    			'date' => date("Y-m-d"),
+    			'disabled_news' => '0',
+    	));
+    	
+    	$news = $query->getResult();
+    	
+    	
+    	
     	return $news;
     }
     
@@ -258,4 +298,6 @@ class TsvNewsController extends AbstractActionController
         // are working when you browse to /tsvNews/tsv-news/foo
         return array();
     }
+    
+
 }
