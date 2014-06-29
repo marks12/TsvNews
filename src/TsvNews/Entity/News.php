@@ -32,6 +32,9 @@ class News {
 	/** @ORM\Column(type="date") */
 	protected $news_date;
 	
+	/** @ORM\Column(type="string") */
+	protected $image;
+	
     /**
      * Magic getter
      * @param $property
@@ -52,9 +55,88 @@ class News {
      */
     public function __set($key, $value)
     {
+    	if(method_exists($this, 'set'.$key))
+    	{
+    		return $this->{'set'.$key}($value);
+    	}
+    	
     	if(property_exists($this, $key))
     	$this->{$key} = $value;
     	else
     	die("Requested property {$key} not exists");
     }
+    
+    /**
+     * Real path to uploaded file
+     * @param unknown $file_path
+     */
+    private function setimage($file_array)
+    {
+    	if($this->image)
+    		$this->deleteImage();	
+    	
+    	if(
+    		!isset($file_array['tmp_name']) 
+			|| !isset($file_array['name'])
+			|| !isset($file_array['type'])
+			|| !in_array($file_array['type'],array('image/png','image/jpeg','image/jpg','image/gif'))
+			)
+    	return false;
+    	
+    	$file_path = $file_array['tmp_name'];
+    	
+    	$dir_path = $this->getDirPath();
+
+        $count_files = 0;
+        
+        $dir = opendir($dir_path);
+        while (readdir($dir))
+        	$count_files++;
+        closedir($dir);
+        
+        
+        $file_name = "({$count_files})".$file_array['name'];
+        
+        
+        if(file_exists($file_path))
+        	if(move_uploaded_file($file_path, $dir_path."/".$file_name))
+        		$uploaded = true;
+        	else 
+        		$uploaded = false;
+        
+        if(property_exists($this, 'image'))
+    		$this->image = $file_name;
+        else 
+        	exit("in ".__CLASS__." property image dont exists!");
+        
+        return $uploaded;
+    }
+    
+    public function deleteImage()
+    {
+    	$dir_path = $this->getDirPath();
+    	
+    	if(mb_strlen($this->image))
+	    	if(file_exists($dir_path."/".$this->image) && !is_dir($dir_path."/".$this->image))
+	    		if(unlink($dir_path."/".$this->image))
+	    		{	
+	    			return true;
+	    		}else 
+	    		{
+	    			return false;
+	    		}
+	   	return true;
+    }
+    
+    public function getDirPath()
+    {
+    	$dir_path = __DIR__."/../../../../../../public_html/img/news";
+    	
+    	if(!file_exists($dir_path))
+    		mkdir($dir_path);
+    	
+    	return $dir_path;
+    }
+
+    
 }

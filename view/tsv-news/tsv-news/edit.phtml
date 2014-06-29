@@ -16,7 +16,7 @@
     $( "#news_date" ).datepicker( $.datepicker.regional[ "ru" ] );
   });
 </script>
-<form method="post">
+<form method="post" name="edit-news" enctype="multipart/form-data" id="edit-news">
 	<div class="row">
 	  <div class="span12">
 			<h1>Редактировать новость</h1>
@@ -42,8 +42,18 @@
 			<textarea class="ckeditor" name="content"><?php echo $this->content;?></textarea>
 	  </div>
 	</div>
-	<br>
 	
+	<br>
+	<div class="row">
+	  <div class="span3">
+			<strong>Тематическое изображение</strong>
+	  </div>
+	  <div class="span9">
+	  		<?php if($this->image) {?><img width="28" src="/img/news/<?php echo $this->image;?>" style="float:left;margin: 0px 10px 10px 0px;"><?php }?>
+			<input type="file" class="input" id="file" name="image">
+	  </div>
+	</div>
+	<br>
 	
 	<div class="row">
 	  <div class="span3">

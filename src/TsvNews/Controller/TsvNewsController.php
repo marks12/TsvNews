@@ -80,8 +80,14 @@ class TsvNewsController extends AbstractActionController
     			)
     	);
     	
-    	if ($request->isPost()) {
     	
+    	if ($request->isPost()) {
+    		
+    		if($request->getFiles())
+	    		if(!$news->__set('image',$request->getFiles()['image']))
+	    			exit('File upload error');
+    		
+    		
     		if(isset($request->getPost()->title) && $request->getPost()->content)
     		{
 				$this->convert_date();
@@ -107,6 +113,7 @@ class TsvNewsController extends AbstractActionController
     		$vm->setVariable('start_date',$news->__get("start_date"));
     		$vm->setVariable('end_date',$news->__get("end_date"));
     		$vm->setVariable('news_date',$news->__get("news_date"));
+    		$vm->setVariable('image',$news->__get("image"));
     		
     	}
     	 
@@ -129,6 +136,8 @@ class TsvNewsController extends AbstractActionController
         				'id' => (int)$this->getEvent()->getRouteMatch()->getParam('id')
         		));
 
+        $news->deleteImage();
+        
     	$objectManager->remove($news);
     	$objectManager->flush();
         
@@ -151,8 +160,12 @@ class TsvNewsController extends AbstractActionController
     			
 				$this->convert_date();
     			    			
-    			$news = new News();
-    			$news->__set("title", $request->getPost()->title);
+				$news = new News();
+				
+				if(!$news->__set('image',$request->getFiles()['image']))
+					exit('File upload error');
+
+				$news->__set("title", $request->getPost()->title);
     			$news->__set("content", $request->getPost()->content);
     			$news->__set("short_content", $request->getPost()->short_content);
     			$news->__set("disabled_news", false);

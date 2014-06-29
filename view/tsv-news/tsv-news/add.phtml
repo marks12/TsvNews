@@ -23,6 +23,7 @@ $dateTime
 $form = new Form('add-news');
 $form->setAttribute('action', $this->url('zfcadmin/tsv-news/default',array("action"=>"add")));
 $form->setAttribute('method', 'post');
+$form->setAttribute('enctype', 'multipart/form-data');
 $form->add($dateTime);
 $form->prepare();
 
@@ -67,6 +68,16 @@ $form->prepare();
 	  		<strong>Полный текст новости поддерживается html оформление.</strong>
 			<br>
 	  <textarea class="ckeditor" name="content"></textarea>
+	  </div>
+	</div>
+
+	<br>
+	<div class="row">
+	  <div class="span3">
+			<strong>Тематическое изображение</strong>
+	  </div>
+	  <div class="span9">
+			<input type="file" class="input" id="file" name="image">
 	  </div>
 	</div>
 
