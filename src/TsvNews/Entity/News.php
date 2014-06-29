@@ -72,9 +72,7 @@ class News {
      */
     private function setimage($file_array)
     {
-    	if($this->image)
-    		$this->deleteImage();	
-    	
+
     	if(
     		!isset($file_array['tmp_name']) 
 			|| !isset($file_array['name'])
@@ -97,7 +95,10 @@ class News {
         
         $file_name = "({$count_files})".$file_array['name'];
         
-        
+
+        if($this->image)
+        	$this->deleteImage();
+         
         if(file_exists($file_path))
         	if(move_uploaded_file($file_path, $dir_path."/".$file_name))
         		$uploaded = true;
