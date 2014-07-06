@@ -41,7 +41,7 @@ Zend\View\Helper\PaginationControl::setDefaultViewPartial('partials/tsv_searchpa
         <font size="-2">
         Дата начала отображения: <?php echo $row->__get('start_date')->format('d.m.Y');?><br>        
         Дата окончания отображения: <?php echo $row->__get('end_date')->format('d.m.Y');?><br>        
-        Отображаемая дата новости: <?php echo $row->__get('news_date')->format('d.m.Y');?><br>        
+        Отображаемая дата новости: <?php echo $row->__get('news_date')->format('d.m.Y H:i:s');?><br>        
 		</font>
 		
 			

@@ -1,7 +1,5 @@
-<script src="//cdn.ckeditor.com/4.4.1/standard/ckeditor.js"></script>
-<script>
-	CKEDITOR.replace( 'content' );
-</script>
+<script src="//cdn.ckeditor.com/4.4.2/full/ckeditor.js"></script>
+
 <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://jquery-ui.googlecode.com/svn-history/r3004/trunk/ui/i18n/ui.datepicker-ru.js"></script>
@@ -18,37 +16,38 @@
 </script>
 <form method="post" name="edit-news" enctype="multipart/form-data" id="edit-news">
 	<div class="row">
-	  <div class="span12">
+	  <div class="col-md-12">
 			<h1>Редактировать новость</h1>
 	  </div>
 	</div>
 	<br>
 	<div class="row">
-	  <div class="span12">
-			<input type="text" class="input-xxlarge" placeholder="Введите заголовок новости" value="<?php echo $this->title;?>" name="title" style="width:98%;" required>
+	  <div class="col-md-12">
+			<input type="text" class="form-control" placeholder="Заголовок новости" value="<?php echo $this->title;?>" name="title" style="width:98%;" required>
 	  </div>
 	</div>
 	<div class="row">
-	  <div class="span12">
-	  		<strong>Краткий текст новости (до 130 символов Кирилицы без HTML, 255 Латинского текста).</strong>
+	  <div class="col-md-12">
+
 	  		<br>
-			<textarea rows="2" cols="300"  class="input-xxlarge" name="short_content" style="width:98%;" required><?php echo $this->short_content;?></textarea>
+			<textarea rows="2" cols="300" placeholder="Краткий текст новости" class="form-control" name="short_content" style="width:98%;" required><?php echo $this->short_content;?></textarea>
 	  </div>
 	</div>
 	<div class="row">
-	  <div class="span12">
-	  		<strong>Полный текст новости поддерживается html оформление.</strong>
+	  <div class="col-md-12">
 			<br>
-			<textarea class="ckeditor" name="content"><?php echo $this->content;?></textarea>
+				  		<strong>Полный текст новости поддерживается html оформление.</strong>
+			<br>
+			<textarea name="content"><?php echo $this->content;?></textarea>
 	  </div>
 	</div>
-	
+
 	<br>
 	<div class="row">
-	  <div class="span3">
+	  <div class="col-md-3">
 			<strong>Тематическое изображение</strong>
 	  </div>
-	  <div class="span9">
+	  <div class="col-md-9">
 	  		<?php if($this->image) {?><img width="28" src="/img/news/<?php echo $this->image;?>" style="float:left;margin: 0px 10px 10px 0px;"><?php }?>
 			<input type="file" class="input" id="file" name="image">
 	  </div>
@@ -56,38 +55,43 @@
 	<br>
 	
 	<div class="row">
-	  <div class="span3">
+	  <div class="col-md-3">
 			<strong>Дата начала отображения новости</strong>
 	  </div>
-	  <div class="span9">
+	  <div class="col-md-9">
 			<input type="text" class="input" id="start_date" value="<?php echo $this->start_date->format('d.m.Y');?>" name="start_date" required>
 	  </div>
 	</div>
 
 	<br>
 	<div class="row">
-	  <div class="span3">
+	  <div class="col-md-3">
 			<strong>Дата окончания отображения новости</strong>
 	  </div>
-	  <div class="span9">
+	  <div class="col-md-9">
 			<input type="text" class="input" id="end_date" value="<?php echo $this->end_date->format('d.m.Y');?>" name="end_date" required>
 	  </div>
 	</div>
 		
 	<br>
 	<div class="row">
-	  <div class="span3">
+	  <div class="col-md-3">
 			<strong>Отображаемая дата новости</strong>
 	  </div>
-	  <div class="span9">
+	  <div class="col-md-9">
 			<input type="text" class="input" id="news_date" value="<?php echo $this->news_date->format('d.m.Y');?>" name="news_date" required>
+			<input type="text" size="8" class="input" id="news_time" value="<?php echo $this->news_date->format('H:i:s');?>" name="news_time" required>
 	  </div>
 	</div>
 		<br>
 	<div class="row">
-	  <div class="span12">
+	  <div class="col-md-12">
 			<button type="submit" class="btn btn-success">Сохранить</button>
 			<button type="button" onclick="if(confirm('Хотите отменить сохранение?')) window.location.href='<?php echo $this->url('zfcadmin/tsv-news') ?>';" class="btn btn-warning">Отмена</button>
 	  </div>
 	</div>
 </form>
+<script>
+CKEDITOR.replace( 'content', {allowedContent : true
+});
+</script>
