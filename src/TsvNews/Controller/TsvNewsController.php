@@ -10,12 +10,13 @@
 namespace TsvNews\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use TsvNews\Entity\News;
+use Zend\View\Model\ViewModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Zend\Paginator\Paginator;
-use Zend\View\Model\ViewModel;
+use TsvNews\Entity\News;
+use Zend\Escaper\Escaper;
 
 class TsvNewsController extends AbstractActionController
 {
@@ -267,21 +268,21 @@ class TsvNewsController extends AbstractActionController
     	return $news;
     }
     
-    public function getNewsByPage($actual = true)
+    public function getNewsByPage($archive_date = '')
     {
     	$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
 		
-    	if($actual)
-    	$dql = "SELECT * from News where start_date<='".date("Y-m-d")."' and end_date>='".date("Y-m-d")."' and disabled_news=0";
-		else
-		$dql = "SELECT * from News where end_date<'".date("Y-m-d")."' and disabled_news=0";
+    	$repository = $entityManager->getRepository('TsvNews\Entity\News')->getFilteredNews($archive_date,$entityManager);
+    	$adapter = new DoctrineAdapter(new ORMPaginator($repository, $fetchJoinCollection = true));
 
-		$query = $entityManager->createQuery($dql)
-		                       ->setFirstResult(0)
-		                       ->setMaxResults(100);
-		
-		$paginator = new Paginator($query, $fetchJoinCollection = true);
+    	$paginator = new Paginator($adapter);
+    	$paginator->setDefaultItemCountPerPage(2);
+    	
+    	$page = (int)$this->getEvent()->getRouteMatch()->getParam('page');
+    	if($page) $paginator->setCurrentPageNumber($page);
+    	
     	return $paginator;
+    	
     }
     
     public function getNewsList($count_news=5)

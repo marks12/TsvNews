@@ -82,6 +82,11 @@ return array(
 					'cache' => 'array',
 					'paths' => array(__DIR__ . '/../src/TsvNews/Entity'),
 			),
+			'tsvnews_repo' => array(
+					'class' =>'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+					'cache' => 'array',
+					'paths' => array(__DIR__ . '/../src/TsvNews/Repository'),
+			),
 			'orm_default' => array(
 				'drivers' => array(
 					'TsvNews\Entity' => 'tsvnews_entities',
@@ -89,4 +94,5 @@ return array(
 			),
 		),
 	),
+		
 );

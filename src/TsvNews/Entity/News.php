@@ -2,7 +2,11 @@
 namespace TsvNews\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
-/** @ORM\Entity */
+/** 
+ * @ORM\Entity(repositoryClass="TsvNews\Repository\TsvNewsRepository") 
+ * @ORM\HasLifecycleCallbacks()
+ * 
+ */
 class News {
 	/**
 	 * @ORM\Id
@@ -17,7 +21,7 @@ class News {
 	/** @ORM\Column(type="text") */
 	protected $content;
 
-	/** @ORM\Column(type="string") */
+	/** @ORM\Column(type="text") */
 	protected $short_content;
 	
 	/** @ORM\Column(type="boolean") */
