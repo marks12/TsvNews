@@ -33,10 +33,10 @@ class News {
 	/** @ORM\Column(type="datetime") */
 	protected $end_date;
 	
-	/** @ORM\Column(type="date") */
+	/** @ORM\Column(type="datetime") */
 	protected $news_date;
 	
-	/** @ORM\Column(type="string") */
+	/** @ORM\Column(type="string", nullable=true) */
 	protected $image;
 	
     /**

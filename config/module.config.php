@@ -66,6 +66,9 @@ return array(
         'template_path_stack' => array(
             'TsvNews' => __DIR__ . '/../view',
         ),
+		'template_map' => array(
+			'tsv-news/news_pagination'		=> __DIR__ . '/../view/partials/news_pagination.phtml',
+		),
     ),
 	'navigation' => array(
 			'admin' => array(
