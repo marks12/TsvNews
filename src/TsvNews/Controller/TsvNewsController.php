@@ -95,6 +95,8 @@ class TsvNewsController extends AbstractActionController
 				$this->convert_date();
     			$news->__set("title", $request->getPost()->title);
     			$news->__set("content", $request->getPost()->content);
+    			$news->__set("meta_title", $request->getPost()->meta_title);
+    			$news->__set("meta_description", $request->getPost()->meta_description);
     			$news->__set("short_content", $request->getPost()->short_content);
     			$news->__set("start_date", new \DateTime($request->getPost()->start_date));
     			$news->__set("end_date", new \DateTime($request->getPost()->end_date));
@@ -116,6 +118,8 @@ class TsvNewsController extends AbstractActionController
     		$vm->setVariable('end_date',$news->__get("end_date"));
     		$vm->setVariable('news_date',$news->__get("news_date"));
     		$vm->setVariable('image',$news->__get("image"));
+    		$vm->setVariable('meta_title',$news->__get("meta_title"));
+    		$vm->setVariable('meta_description',$news->__get("meta_description"));
     		
     	}
     	 
@@ -175,6 +179,8 @@ class TsvNewsController extends AbstractActionController
     			$news->__set("start_date", new \DateTime($request->getPost()->start_date));
     			$news->__set("end_date", new \DateTime($request->getPost()->end_date));
     			$news->__set("news_date", new \DateTime($request->getPost()->news_date.' '.$request->getPost()->news_time));
+    			$news->__set("meta_title", $request->getPost()->meta_title);
+    			$news->__set("meta_description", $request->getPost()->meta_description);
     			$objectManager->persist($news);
     			$objectManager->flush();
 

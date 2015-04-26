@@ -39,6 +39,12 @@ class News {
 	/** @ORM\Column(type="string", nullable=true) */
 	protected $image;
 	
+	/** @ORM\Column(type="string", nullable=true) */
+	protected $meta_title;
+	
+	/** @ORM\Column(type="string", nullable=true) */
+	protected $meta_description;
+	
     /**
      * Magic getter
      * @param $property

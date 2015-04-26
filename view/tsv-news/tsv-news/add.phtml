@@ -109,6 +109,35 @@ $form->prepare();
 	  </div>
 	</div>
 	
+	<br>
+	<div class="row">
+	  <div class="col-md-12">
+			<a class="dotted" data-toggle="collapse" href="#collapseMeta" aria-expanded="false" aria-controls="collapseMeta">Мета описания</a>
+	  </div>
+	  <div class="col-md-12">
+			<br>
+	  		<div class="collapse" id="collapseMeta">
+			  <div class="well">
+			    
+			    	<div class="row">
+					  <div class="col-md-12">
+							<strong>Title</strong> - <?php echo htmlspecialchars("<title>Текст</title>")?>
+							<input type="text" class="form-control" id="meta_title" value="<?php echo $this->meta_title;?>" name="meta_title" placeholder="meta title">
+					  </div>
+					</div>
+					<br>
+			    	<div class="row">
+					  <div class="col-md-12">
+							<strong>Description</strong> - <?php echo htmlspecialchars("<meta name=\"Description\" content=\"")?>
+							<input type="text" class="form-control" id="meta_description" value="<?php echo $this->meta_description;?>" name="meta_description" placeholder="meta description">
+					  </div>
+					</div>
+			    
+			  </div>
+			</div>
+	  </div>
+	</div>
+	
 	<div class="row">
 	  <div class="col-md-12">
 			<button type="submit" class="btn btn-success">Сохранить</button>
@@ -120,3 +149,13 @@ $form->prepare();
 CKEDITOR.replace( 'content', {allowedContent : true
 });
 </script>
+<style>
+	.dotted, .dotted:focus {
+		border-bottom: 1px dashed;
+		text-decoration: none;
+	}
+	.dotted:hover, .dotted:visited {
+		border-bottom: 0px;
+		text-decoration: none;
+	}
+</style>
