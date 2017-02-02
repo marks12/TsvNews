@@ -332,22 +332,25 @@ class TsvNewsController extends AbstractActionController
     	
     }
     
-    public function getNewsList($count_news=5)
+    public function getNewsList($count_news=5, $em = null)
     {
-    	$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-    	
-   		$dql = "SELECT n from TsvNews\Entity\News n where n.disabled_news=:disabled_news and n.start_date<=:date and n.end_date>=:date";
-
+        if(!$em) {
+            $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        } else {
+            $entityManager = $em;
+        }
+    
+    	$dql = "SELECT n from TsvNews\Entity\News n where n.disabled_news=:disabled_news and n.start_date<=:date and n.end_date>=:date";
     	$query = $entityManager->createQuery($dql)
-						    	->setFirstResult(0)
-						    	->setMaxResults($count_news);
+		->setFirstResult(0)
+		->setMaxResults($count_news);
+
     	$query->setParameters(array(
-    			'date' => date("Y-m-d"),
-    			'disabled_news' => '0',
+		'date' => date("Y-m-d"),
+    		'disabled_news' => '0',
     	));
-    	
+	    
     	$news = $query->getResult();
-    	
     	return $news;
     }
     
