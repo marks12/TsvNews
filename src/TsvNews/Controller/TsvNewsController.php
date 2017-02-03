@@ -276,9 +276,14 @@ class TsvNewsController extends AbstractActionController
     	return $news;
     }
     
-    public function getArchiveList()
+    public function getArchiveList($entityManager = null)
     {
-    	$em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        if(!is_null($entityManager)) {
+            $em = $entityManager;
+        } else {
+            $em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        }
+
     	$query = $em->createQuery("SELECT n FROM TsvNews\Entity\News n WHERE 
     			n.disabled_news = 0 and 
     			n.news_date < '".date("Y-m-01")."' order by n.news_date desc");
@@ -298,9 +303,9 @@ class TsvNewsController extends AbstractActionController
     	
     }
     
-    public function getNewsByPage($archive_date = '', $em = null)
+    public function getNewsByPage($archive_date = '', $em = null, $RoutePage = null)
     {
-        if($em) {
+        if(!is_null($em)) {
             $entityManager = $em;
         } else {
             $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
@@ -311,19 +316,27 @@ class TsvNewsController extends AbstractActionController
 
     	$paginator = new Paginator($adapter);
     	$paginator->setDefaultItemCountPerPage(5);
-    	
-    	$page = (int)$this->getEvent()->getRouteMatch()->getParam('page');
+
+        if(!is_null($RoutePage)) {
+            $page = $RoutePage;
+        } else {
+            $page = (int)$this->getEvent()->getRouteMatch()->getParam('page');
+        }
+
     	if($page) $paginator->setCurrentPageNumber($page);
     	
     	return $paginator;
     	
     }
-    public function getNewsById($id)
+    public function getNewsById($id, $em = null)
     {
-    	$objectManager = $this
-    	->getServiceLocator()
-    	->get('Doctrine\ORM\EntityManager');
-    	 
+
+        if(!is_null($em)) {
+            $objectManager = $em;
+        } else {
+            $objectManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        }
+
     	$news = $objectManager
     	->getRepository('TsvNews\Entity\News')
     	->findOneBy(
