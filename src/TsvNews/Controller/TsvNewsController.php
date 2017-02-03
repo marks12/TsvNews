@@ -298,10 +298,14 @@ class TsvNewsController extends AbstractActionController
     	
     }
     
-    public function getNewsByPage($archive_date = '')
+    public function getNewsByPage($archive_date = '', $em = null)
     {
-    	$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-		
+        if($em) {
+            $entityManager = $em;
+        } else {
+            $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        }
+
     	$repository = $entityManager->getRepository('TsvNews\Entity\News')->getFilteredNews($archive_date,$entityManager);
     	$adapter = new DoctrineAdapter(new ORMPaginator($repository, $fetchJoinCollection = true));
 
