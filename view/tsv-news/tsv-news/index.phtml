@@ -35,7 +35,7 @@ Zend\View\Helper\PaginationControl::setDefaultViewPartial('partials/tsv_searchpa
 		 <?php if(!$row->__get('disabled_news')) echo "<a class='btn btn-small btn-warning' style='float:right;' href='".$this->url('zfcadmin/tsv-news/default', array('action'=>'disableNews','id'=>$row->__get('id'),'page'=>$this->paginator->getCurrentPageNumber()))."'>Отключить</a>"?>
 		 
           <p><i style="color:gray;"><?php echo $row->__get('short_content');?></i></p>
-          <?php if($row->__get('image')) {?><img width="128" src="/img/news/<?php echo $row->__get('image');?>" style="float:left;margin: 0px 10px 10px 0px;"><?php }?>
+          <?php if($row->__get('image')) {?><img width="128" alt="Апартаменты в стиле лофт" src="/img/news/<?php echo $row->__get('image');?>" style="float:left;margin: 0px 10px 10px 0px;"><?php }?>
           <p><?php echo $row->__get('content');?></p>
         <div style="clear:both;"></div>
         <font size="-2">
