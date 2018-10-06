@@ -357,7 +357,14 @@ class TsvNewsController extends AbstractActionController
             $entityManager = $em;
         }
     
-    	$dql = "SELECT n from TsvNews\Entity\News n where n.disabled_news=:disabled_news and n.start_date<=:date and n.end_date>=:date";
+    	$dql = "SELECT n 
+                from TsvNews\Entity\News n 
+                where 
+                  n.disabled_news=:disabled_news and 
+                  n.start_date<=:date and 
+                  n.end_date>=:date
+                order by n.news_date desc";
+
     	$query = $entityManager->createQuery($dql)
 		->setFirstResult(0)
 		->setMaxResults($count_news);
