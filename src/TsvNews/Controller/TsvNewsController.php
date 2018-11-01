@@ -362,7 +362,8 @@ class TsvNewsController extends AbstractActionController
                 where 
                   n.disabled_news=:disabled_news and 
                   n.start_date<=:date and 
-                  n.end_date>=:date
+                  n.end_date>=:date and 
+                  n.meta_description!='ARTICLE'
                 order by n.news_date desc";
 
     	$query = $entityManager->createQuery($dql)
@@ -377,6 +378,38 @@ class TsvNewsController extends AbstractActionController
     	$news = $query->getResult();
     	return $news;
     }
+
+//    Тестовая функция отображения статей
+    public function getArticlesList($count_news=5, $em = null)
+    {
+        if(!$em) {
+            $entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        } else {
+            $entityManager = $em;
+        }
+
+        $dql = "SELECT n
+                from TsvNews\Entity\News n
+                where
+                  n.disabled_news=:disabled_news and
+                  n.start_date<=:date and
+                  n.end_date>=:date and
+                  n.meta_description='ARTICLE'
+                order by n.news_date desc";
+
+        $query = $entityManager->createQuery($dql)
+            ->setFirstResult(0)
+            ->setMaxResults($count_news);
+
+        $query->setParameters(array(
+            'date' => date("Y-m-d"),
+            'disabled_news' => '0',
+        ));
+
+        $articles = $query->getResult();
+        return $articles;
+    }
+
     
     public function fooAction()
     {
